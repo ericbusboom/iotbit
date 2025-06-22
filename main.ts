@@ -34,4 +34,3 @@ basic.forever(function () {
     basic.pause(5000)
     ESP8266_IoT.publishMqttMessage("time: " + convertToText(RTC_DS1307.getTime(RTC_DS1307.TimeType.MINUTE)) + ":" + convertToText(RTC_DS1307.getTime(RTC_DS1307.TimeType.SECOND)), "time", ESP8266_IoT.QosList.Qos0)
 })
-
