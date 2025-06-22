@@ -1,5 +1,14 @@
+ESP8266_IoT.MqttEvent("led/g", ESP8266_IoT.QosList.Qos0, function (message) {
+    pins.digitalWritePin(DigitalPin.P15, parseFloat(message))
+})
+ESP8266_IoT.MqttEvent("led/r", ESP8266_IoT.QosList.Qos0, function (message) {
+    pins.digitalWritePin(DigitalPin.P13, parseFloat(message))
+})
 ESP8266_IoT.MqttEvent("show/1", ESP8266_IoT.QosList.Qos0, function (message) {
     basic.showString("" + (message))
+})
+ESP8266_IoT.MqttEvent("led/y", ESP8266_IoT.QosList.Qos0, function (message) {
+    pins.digitalWritePin(DigitalPin.P14, parseFloat(message))
 })
 input.onButtonPressed(Button.A, function () {
 	
@@ -33,4 +42,12 @@ initialize()
 basic.forever(function () {
     basic.pause(5000)
     ESP8266_IoT.publishMqttMessage("time: " + convertToText(RTC_DS1307.getTime(RTC_DS1307.TimeType.MINUTE)) + ":" + convertToText(RTC_DS1307.getTime(RTC_DS1307.TimeType.SECOND)), "time", ESP8266_IoT.QosList.Qos0)
+})
+basic.forever(function () {
+    if (pins.digitalReadPin(DigitalPin.P0) == 1) {
+        ESP8266_IoT.publishMqttMessage("1", "button", ESP8266_IoT.QosList.Qos0)
+        while (pins.digitalReadPin(DigitalPin.P0) == 1) {
+            basic.pause(100)
+        }
+    }
 })
